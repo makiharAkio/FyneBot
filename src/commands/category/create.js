@@ -163,32 +163,12 @@ module.exports = {
 
     if (subcommand === 'category') {
       optList.push(interaction.options.get('category-name').value);
-      // const categoryName = interaction.options.get('category-name').value;
-      //const transactionName = interaction.options.get("trx-name").value;
-      // const category = await Category.createCategory(categoryName, transactionName);
       retVal = await Category.createCategory(optList[0]);
-      // retVal = await Category.createCategory(categoryName);
-      // console.log(category);
-      // if (category !== null) await interaction.editReply(`Category named ${category['categoryName']} created!`);
-      // else await interaction.editReply(`Category named ${categoryName} creation failed!\nName already exists!`);
-      //if (retVal === 'exists') await interaction.editReply(`Category named ${categoryName} creation failed!\nName already exists!`);
-      //else await interaction.editReply(`Category named ${category['categoryName']} created!`);
     }
     else if (subcommand === 'sub-category') {
       optList.push(interaction.options.get("sub-category-name").value);
       optList.push(interaction.options.get('category-name').value);
-      // const categoryName = interaction.options.get('category-name').value;
-      // const subCategoryName = interaction.options.get("sub-category-name").value;
-      //interaction.reply(`creating a category named ${categoryName}`);
       retVal = await SubCategory.createSubCategory(optList[0], optList[1]);
-      // retVal = await SubCategory.createSubCategory(subCategoryName, categoryName);
-      //console.log(subcategory);
-      //await interaction.editReply(JSON.stringify(category));
-      // if (subcategory !== null) await interaction.editReply(`Category named ${subcategory['subCategoryName']} created!`);
-      // else await interaction.editReply(`Category named ${subcategory} creation failed!\nName already exists!`)
-      //if (retVal === 'catNotFound') await interaction.editReply(`Category named ${subCategoryName} creation failed!\nCategory named ${categoryName} not found!`);
-      //else if (retVal === 'subCatExists') await interaction.editReply(`Category named ${subCategoryName} creation failed!\nName already exists!`);
-      //else await interaction.editReply(`Category named ${subcategory['subCategoryName']} created!`);
     }
     else if (subcommand === 'source') {
       interaction.reply('creating a source...');
