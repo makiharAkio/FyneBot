@@ -4,7 +4,7 @@ const Category = require('./Category');
 
 const createSubCategory = async (subCategoryName, categoryName) => {
     const categoryId = await Category.getCategoryId(categoryName);
-    if (categoryId == null) return 'catNotFound';
+    if (categoryId == null) return 'notFound';
     else if ((await getSubCategory(subCategoryName, categoryName)).length > 0) return 'subCatExists';
     else return await SubCategorySchema.create({ subCategoryName: subCategoryName, categoryId: categoryId });
 };
@@ -13,7 +13,7 @@ const getSubCategory = async (subCategoryName, categoryName) => {
     try {
         const categoryId = await Category.getCategoryId(categoryName);
         console.log(categoryId);
-        if (categoryId == null) return 'catNotFound';
+        if (categoryId == null) return 'notFound';
         return await SubCategorySchema.find({ subCategoryName: subCategoryName, categoryId: categoryId }).exec();
     } catch (error) {
         return error;

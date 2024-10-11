@@ -1,7 +1,6 @@
-const { Interaction, ClientVoiceManager, EmbedBuilder, Colors } = require('discord.js');
+const { Interaction, EmbedBuilder, Colors } = require('discord.js');
 const Category = require('../../database/schema/Category');
 const SubCategory = require('../../database/schema/SubCategory');
-const consoleLog = require('../../events/ready/consoleLog');
 
 module.exports = {
   data:{
@@ -106,32 +105,33 @@ module.exports = {
     // }
 
     var qryList = null;
+    var strCat = null;
     await interaction.deferReply();
 
     if (subcommand === 'categories') {
       qryList = await Category.getAllCategory();
-      var strCat = "All Categories: \n";
+      strCat = "All Categories: \n";
     }
     else if (subcommand === 'sub-category')  {
       const categoryName = interaction.options.get("category-name").value;
       qryList = await SubCategory.getAllSubCategorybyCat(categoryName);
-      var strCat = "All Sub-Categories: \n";
+      strCat = "All Sub-Categories: \n";
     }
     else if (subcommand === 'source')  {
       qryList = await Category.getAllCategory();
-      var strCat = "All Sources: \n";
+      strCat = "All Sources: \n";
     }
     else if (subcommand === 'income')  {
       qryList = await Category.getAllCategory();
-      var strCat = "All Incomes: \n";
+      strCat = "All Incomes: \n";
     }
     else if (subcommand === 'venue')  {
       qryList = await Category.getAllCategory();
-      var strCat = "All Venues: \n";
+      strCat = "All Venues: \n";
     }
     else if (subcommand === 'outcome')  {
       qryList = await Category.getAllCategory();
-      var strCat = "All Outcomes: \n";
+      strCat = "All Outcomes: \n";
     }
     
     if (qryList !== null){

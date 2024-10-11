@@ -1,7 +1,7 @@
 const CategorySchema = require('../models/Category');
 
 const createCategory = async (categoryName) => {
-    if ((await getCategory(categoryName)).length > 0) return 'catExists';
+    if ((await getCategory(categoryName)).length > 0) return 'exists';
     else return await CategorySchema.create({ categoryName: categoryName });
 };
 
