@@ -155,7 +155,6 @@ module.exports = {
    */
    run: async ({ interaction }) => {
     const subcommand = interaction.options.getSubcommand();
-    //const AllCategory = await Category.getAllCategory();
 
     var retVal = null;
     const optList = [];
@@ -171,11 +170,27 @@ module.exports = {
       retVal = await SubCategory.createSubCategory(optList[0], optList[1]);
     }
     else if (subcommand === 'source') {
-      interaction.reply('creating a source...');
+      optList.push(interaction.options.get("source-name").value);
+      optList.push(interaction.options.get('sub-category-name').value);
+      // retVal = await Source.createSource(optList[0], optList[1]);
     }
-    else if (subcommand === 'venue') interaction.reply('creating a venue...');
-    else if (subcommand === 'income') interaction.reply('creating a income...');
-    else if (subcommand === 'outcome') interaction.reply('creating a outcome...');
+    else if (subcommand === 'venue') {
+      optList.push(interaction.options.get("venue-name").value);
+      optList.push(interaction.options.get('sub-category-name').value);
+      // retVal = await Venue.createVenue(optList[0], optList[1]);
+    }
+    else if (subcommand === 'income') {
+      optList.push(interaction.options.get("income-date").value);
+      optList.push(interaction.options.get('income-ammount').value);
+      optList.push(interaction.options.get('source-name').value);
+      // retVal = await Income.createIncome(optList[0], optList[1], optList[2]);
+    }
+    else if (subcommand === 'outcome') {
+      optList.push(interaction.options.get("outcome-date").value);
+      optList.push(interaction.options.get('outcome-ammount').value);
+      optList.push(interaction.options.get('venue-name').value);
+      // retVal = await Outcome.createOutcome(optList[0], optList[1], optList[2]);
+    }
     
     console.log(`retVal: (${retVal})`);
 
@@ -185,7 +200,10 @@ module.exports = {
       else if (retVal === 'notFound')
         strCat = `Creation failed!\n${optList[1]} not found!`;
       else
-        strCat = `${subcommand.charAt(0).toUpperCase() + subcommand.slice(1)} named ${optList[0]} created!`;
+        if (optList.length === 3)
+          strCat = `New ${subcommand.charAt(0).toUpperCase() + subcommand.slice(1)} - ${optList[0]}\n${optList[0]}  ${optList[1]}`;
+        else
+          strCat = `${subcommand.charAt(0).toUpperCase() + subcommand.slice(1)} named ${optList[0]} created!`;
       console.log(`strCat: (${strCat})`);
       const embed = new EmbedBuilder().setDescription(`${strCat}`).setColor(Colors.Blurple);
       await interaction.editReply({ embeds: [embed] });
