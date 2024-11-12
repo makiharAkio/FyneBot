@@ -23,22 +23,6 @@ module.exports = {
           "type": 3,
           "required": true,
         },
-        // {
-        //   "name": "trx-name",
-        //   "description": "Transaction Name",
-        //   "type": 3,
-        //   "required": true,
-        //   "choices": [
-        //     {
-        //         "name": "Income",
-        //         "value": "income"
-        //     },
-        //     {
-        //         "name": "Outcome",
-        //         "value": "outcome"
-        //     },
-        //   ]
-        // }
       ]
     },
     {

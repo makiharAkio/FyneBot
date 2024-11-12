@@ -1,20 +1,19 @@
-const SubCategorySchema = require('../models/SubCategory');
-const Category = require('./Category');
-
+const SubCategoryModel = require('../models/SubCategory');
+const CategoryModel = require('./Category');
 
 const createSubCategory = async (subCategoryName, categoryName) => {
-    const categoryId = await Category.getCategoryId(categoryName);
+    const categoryId = await CategoryModel.getCategoryId(categoryName);
     if (categoryId == null) return 'notFound';
-    else if ((await getSubCategory(subCategoryName, categoryName)).length > 0) return 'subCatExists';
-    else return await SubCategorySchema.create({ subCategoryName: subCategoryName, categoryId: categoryId });
+    else if ((await getSubCategory(subCategoryName, categoryName)).length > 0) return 'exists';
+    else return await SubCategoryModel.create({ subCategoryName: subCategoryName, categoryId: categoryId });
 };
 
 const getSubCategory = async (subCategoryName, categoryName) => {
     try {
-        const categoryId = await Category.getCategoryId(categoryName);
-        console.log(categoryId);
+        const categoryId = await CategoryModel.getCategoryId(categoryName);
+        console.log('categoryId ' + categoryId);
         if (categoryId == null) return 'notFound';
-        return await SubCategorySchema.find({ subCategoryName: subCategoryName, categoryId: categoryId }).exec();
+        return await SubCategoryModel.find({ subCategoryName: subCategoryName, categoryId: categoryId }).exec();
     } catch (error) {
         return error;
     }
@@ -32,13 +31,11 @@ const getSubCategoryId = async (subCategoryName, categoryName) => {
     }
 };
 
-const getAllSubCategorybyCat = async (categoryName) => {
+const getAllSubCategory = async () => {
     try {
         const subCategoryList = [];
-        const categoryId = await Category.getCategoryId(categoryName);
-        (await SubCategorySchema.find({ categoryId: categoryId }).exec()).forEach(element => {
+        (await SubCategoryModel.find().exec()).forEach(element => {
             subCategoryList.push(element.subCategoryName);
-            console.log(`${element.subCategoryName} pushed`);
         });
         console.log(`get All: ${subCategoryList}`);
         return subCategoryList;
@@ -47,59 +44,34 @@ const getAllSubCategorybyCat = async (categoryName) => {
     } 
 };
 
-// const createSubCategory = async (subCategoryName, categoryName, trxName) => {
-//     const categoryId =  await Category.getCategory(categoryName, trxName)[0].categoryId;
-//     if (categoryId == null) return "catNotFound";
-//     else if ((await getSubCategory(subCategoryName, categoryName)).length > 0) return "subCatNotFound";
-//     else return await SubCategorySchema.create({ subCategoryName: subCategoryName, categoryName: categoryName }).exec();
-// };
-
-// const getSubCategory = async (subCategoryName, categoryName, trxName) => {
-//     try {
-//         const categoryId = await Category.getCategoryId(categoryName, trxName);
-//         if (categoryId === null) return "catNotFound";
-//         return await SubCategorySchema.find({ subCategoryName: subCategoryName, categoryId: categoryId }).exec();
-//     } catch (error) {
-//         return error;
-//     }
-// };
-
-// const getSubCategoryId = async (subCategoryName, categoryName, trxName) => {
-//     try {
-//         const subCategoryId = [];
-//         (await getSubCategory(subCategoryName, categoryName, trxName)).forEach(element =>{
-//             subCategoryId.push(element.id);
-//         });
-//         return subCategoryId[0]; 
-//     } catch (error) {
-//         return error;
-//     }
-// };
-
-// const getAllSubCategorybyCat = async (categoryName, trxName) => {
-//     try {
-//         const subCategoryList = [];
-//         (await SubCategorySchema.find().exec()).forEach(element => {
-//             subCategoryList.push(element.subCategoryName);
-//         });
-//         return subCategoryList;
-//     } catch (error){
-//         return error;
-//     } 
-// };
+const getAllSubCategorybyCat = async (categoryName) => {
+    try {
+        const subCategoryList = [];
+        const categoryId = await CategoryModel.getCategoryId(categoryName);
+        (await SubCategoryModel.find({ categoryId: categoryId }).exec()).forEach(element => {
+            subCategoryList.push(element.subCategoryName);
+            console.log(`${element.subCategoryName} pushed`);
+        });
+        console.log(`getAllSubCategorybyCat: ${subCategoryList}`);
+        return subCategoryList;
+    } catch (error){
+        return error;
+    } 
+};
 
 const setSubCategory = async (oldSubCategoryName, newSubCategoryName, categoryName) => {
-    return await SubCategorySchema.findOneAndUpdate({subCategoryName: oldSubCategoryName, categoryName: categoryName}, newSubCategoryName, {
+    return await SubCategoryModel.findOneAndUpdate({subCategoryName: oldSubCategoryName, categoryName: categoryName}, newSubCategoryName, {
       upsert: true,
     }).exec();
 };
 
 const deleteSubCategory = async (subCategoryName, categoryName) => {
-    return await SubCategorySchema.findOneAndDelete({ subCategoryName: subCategoryName, categoryName: categoryName }).exec(); // returns {deletedCount: 1}
+    return await SubCategoryModel.findOneAndDelete({ subCategoryName: subCategoryName, categoryName: categoryName }).exec(); // returns {deletedCount: 1}
 };
 module.exports = {createSubCategory,
     getSubCategory,
     getSubCategoryId,
+    getAllSubCategory,
     getAllSubCategorybyCat,
     setSubCategory,
     deleteSubCategory

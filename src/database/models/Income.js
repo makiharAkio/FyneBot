@@ -9,6 +9,10 @@ const incomeSchema = new Schema({
     type: Number,
     required: true,
   },
+  incomeComment: {
+    type: String,
+    required: false,
+  },
   sourceId: {
     type: Schema.Types.ObjectId,
     required: true,

@@ -9,6 +9,10 @@ const outcomeSchema = new Schema({
     type: Number,
     required: true,
   },
+  outcomeComment: {
+    type: String,
+    required: false,
+  },
   venueId: {
     type: Schema.Types.ObjectId,
     required: true,
